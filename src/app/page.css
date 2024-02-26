@@ -13,37 +13,54 @@ main {
 }
 
 .calendarCell {  
-    padding: 20px;  
+    padding: 5px;  
     flex-basis: 14.285%;
-    border-bottom: 1px solid black;
-    border-right: 1px solid black;
+}
+
+.calendarCellContents {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-height: 100%;
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.calendarCellDate {
+    position: relative;
+    padding: 5px;
+    top: 5px;
+    right: 5px;
+    font-size: 50%;
+    font-weight: bold;
+    text-align: right;
+}
+
+.calendarCellDate.populated {
+    color: white;
+    background: #2b67b7;
+    border-radius: 50%;
 }
 
 .calendarContainer {
     margin-top: 20px;
     width: 100%;
-    border: 1px solid black;
 }
 
-.calendarControl {
-    padding: 0 5px;
-    color: white;    
-    background-color: black;
-    border-radius: 20px;
+.calendarControl { 
 }
 
 .calendarControl:hover {
-    background-color: gray;
+    colorcolor: gray;
     cursor: pointer;
 }
 
 .calendarHeader {
-    padding: 20px;
+    padding: 20px 0;
     width: 100%;
     display: flex;
     flex-wrap: nowrap;
     text-align: center;
-    border-bottom: 1px solid black;
+    font-size: 200%;
+    border-bottom: 3px solid gray;
 }
 
 .calendarLabel {

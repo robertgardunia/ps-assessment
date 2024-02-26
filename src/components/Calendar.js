@@ -6,35 +6,40 @@ import DateCard from './DateCard';
 
 const Calendar = (props) => {
     var startDate = new Date(`${props.calendarMonth}/1/${props.calendarYear}`);
-    var currMonth = startDate.toLocaleString('default', { month: 'long'});
+    var currMonthLabel = startDate.toLocaleString('default', { month: 'long'});
+    var currMonth = parseInt(props.calendarMonth);
+    var currYear = parseInt(props.calendarYear);
     var nextMonth, nextParams, nextYear, prevMonth, prevParams, prevYear;
 
+    console.log(currMonth, currYear)
+
     // set control params
-    switch (props.calendarMonth) {
-        case 1: {            
-            prevMonth = 12;
-            prevYear = props.calendarYear - 1;
-        }
-        case 12: {            
-            nextMonth = 1;
-            nextYear = props.calendarYear + 1;
-        }
-        default: {
-            prevMonth = props.calendarMonth - 1;
-            prevYear = props.calendarYear;
-            nextMonth = props.calendarMonth + 1;
-            nextYear = props.calendarYear;
-        }
-    } 
+    if (currMonth == 1) {  
+        console.log("jan");        
+        prevMonth = 12;
+        prevYear = currYear - 1;
+        nextMonth = currMonth + 1;
+        nextYear = currYear;
+    } else if (currMonth == 12) { 
+        console.log("dec"); 
+        prevMonth = currMonth - 1;
+        prevYear = currYear;           
+        nextMonth = 1;
+        nextYear = currYear + 1;
+    } else {
+        prevMonth = currMonth - 1;
+        prevYear = currYear;
+        nextMonth = currMonth + 1;
+        nextYear = currYear;
+    };
 
-    // irritating
-    let currHref;
-    nextParams = `${currHref}&month=${nextMonth}&year=${nextYear}`;
-    prevParams = `${currHref}&month=${prevMonth}&year=${prevYear}`;
-
-    console.log("url: " + window.location.href);
-    console.log(prevParams, nextParams)
-
+    // ideally this would check for existing params and append on any existing ones 
+    let paramLead = '?';
+    let protocol = window.location.protocol;
+    let host = window.location.host;
+    let urlString = `${protocol}//${host}`;
+    nextParams = `${urlString}${paramLead}month=${nextMonth}&year=${nextYear}`;
+    prevParams = `${urlString}${paramLead}month=${prevMonth}&year=${prevYear}`;
 
     const generateDates = () => {        
         const dateArray = [];
@@ -45,7 +50,13 @@ const Calendar = (props) => {
         for (let date = 1; date <= 32; date++) {
             let keyValue = `day-${date}`;
             if (startDate.getMonth() === startMonth) {
-                dateArray.push(<div className="calendarCell" key={keyValue}>{date}</div>)
+                dateArray.push(
+                    <div className="calendarCell" key={keyValue}>
+                        <DateCard
+                            date={date}
+                        />
+                    </div>
+                )
             }
             startDate.setDate(startDate.getDate() + 1);
         }
@@ -57,7 +68,7 @@ const Calendar = (props) => {
         <div className="calendarContainer">
             <div className="calendarHeader">
                 <div className="calendarControl leftControl"><a href={prevParams}>&lt;</a></div>
-                <div className="calendarLabel">{currMonth}</div>
+                <div className="calendarLabel">{currMonthLabel} {currYear}</div>
                 <div className="calendarControl rightControl"><a href={nextParams}>&gt;</a></div>
             </div>
             <div className="calendarBody">

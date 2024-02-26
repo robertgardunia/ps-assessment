@@ -14,40 +14,44 @@ export default function Home() {
   
   // check for month/year params
   const getUrlParams = () => {
-      const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
 
-      if (urlParams.has('month')) {
-        let paramMonth = urlParams('month');
-        let regexMonth = /(1[0-2])|([0-9])/g;
-      
-        if (paramMonth.match(regexMonth)) {
-          setCalendarMonth(paramMonth);
-        }  else {
-          console.log(`month param of ${paramMonth} is invalid`)
+    if (urlParams.has('month')) {
+      let paramMonth = urlParams.get('month');
+      let regexMonth = /(1[0-2]{1})|([1-9]{1})/g;
+    
+      if (paramMonth.match(regexMonth) && parseInt(paramMonth) >= 1 && parseInt(paramMonth) <= 12) {
+        console.log("month match")
+        setCalendarMonth(paramMonth);
+      }  else {
+        console.log("month fail")
+        alert(`month param of ${paramMonth} is invalid, defaulting to 1/2020`)
+        window.location.replace("http://localhost:3000/?month=1&year=2020");
       }   
     }
 
     if (urlParams.has('year')) {
-      let paramYear = urlParams('year');
+      let paramYear = urlParams.get('year');
       let regexYear = /(19[0-9]{2}|2[0-9]{3})/g; 
     
       if (paramYear.match(regexYear)) {
+        console.log("year match")
         setCalendarYear(paramYear);
       } else {
-        console.log(`year param of ${paramYear} is invalid`)
+        alert(`year param of ${paramYear} is invalid, defaulting to 1/2020`);
+        window.location.replace("http://localhost:3000/?month=1&year=2020");
       }   
     }
-
-    console.log(`passed date: ${calendarMonth}/${calendarYear} `)
   
     return;
   }
 
+  useEffect(() => {
+    getUrlParams();
+  }, [])  
+
   return (
     <main>
-      <div>
-        <h1>Upcoming Releases</h1>
-      </div>
       <Calendar
         calendarMonth={calendarMonth} 
         calendarYear={calendarYear}
