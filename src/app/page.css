@@ -1,0 +1,51 @@
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6rem;
+    /* min-height: 100vh; */
+}
+
+.calendarBody {    
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.calendarCell {  
+    padding: 20px;  
+    flex-basis: 14.285%;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.calendarContainer {
+    margin-top: 20px;
+    width: 100%;
+    border: 1px solid black;
+}
+
+.calendarControl {
+    padding: 0 5px;
+    color: white;    
+    background-color: black;
+    border-radius: 20px;
+}
+
+.calendarControl:hover {
+    background-color: gray;
+    cursor: pointer;
+}
+
+.calendarHeader {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.calendarLabel {
+    flex-grow: 1;
+}
