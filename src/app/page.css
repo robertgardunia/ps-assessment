@@ -25,6 +25,10 @@ main {
     box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
+.calendarCellContents.emptyCell {
+    box-shadow: none;
+}
+
 .calendarCellDate {
     display: flex;
     flex-direction: column;

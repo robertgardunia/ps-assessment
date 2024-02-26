@@ -3,9 +3,16 @@ import ReleasePromo from './ReleasePromo';
 
 const DateCard = (props) => {
     return (
-        <div className="calendarCellContents">
-            <div className="calendarCellDate"><span>{props.date}</span></div>
-        </div>
+        <>
+            {props.inMonth &&
+                <div className="calendarCellContents">
+                    <div className="calendarCellDate"><span>{props.date}</span></div>
+                </div>
+            }
+            {!props.inMonth && 
+                <div className="calendarCellContents emptyCell">{props.inMonth}</div>
+            }
+        </>
     )
 }
 

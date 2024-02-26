@@ -6,8 +6,9 @@ import DateCard from './DateCard';
 const Calendar = (props) => { 
     const [urlProtocol, setUrlProtocol] = useState("");
     const [urlHost, setUrlHost] = useState("");   
-    const dayArray = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
+    const dayLabelArray = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
     var startDate = new Date(`${props.calendarMonth}/1/${props.calendarYear}`);
+    var firstDaySeed = new Date(`${props.calendarMonth}/1/${props.calendarYear}`);
     var currMonthLabel = startDate.toLocaleString('default', { month: 'long'});
     var currMonth = parseInt(props.calendarMonth);
     var currYear = parseInt(props.calendarYear);
@@ -60,7 +61,7 @@ const Calendar = (props) => {
     //   }
 
     const generateDayLabels = () => {
-        let dayArrayMap = dayArray.map((day, index) => <div className="calendarDayLabel" key={index}>{day}</div>)
+        let dayArrayMap = dayLabelArray.map((day, index) => <div className="calendarDayLabel" key={index}>{day}</div>)
         
         return dayArrayMap;
     }
@@ -68,22 +69,57 @@ const Calendar = (props) => {
     const generateDates = () => {        
         const dateArray = [];
 
-        // console.log("genDates: " + props.returnedDataSet)
-
         // create dateArray from valid dates
         var startMonth = startDate.getMonth();
+        var inMonth = false;
+        var populated = false;        
+        let dayCounter = 1;        
+        let firstDaySeed = new Date(`${props.calendarMonth}/1/${props.calendarYear}`);
+        let firstDay;
 
-        for (let date = 1; date <= 42; date++) {
-            if (startDate.getMonth() === startMonth) {
+        // find first day of month
+        for (let d = 1; d <= 7; d++) {            
+            if (firstDaySeed.getDay() === 1) {
+                firstDay = d;
+            }
+            firstDaySeed.setDate(firstDaySeed.getDate() + 1);
+        }
+
+        for (let i = 1; i <= 42; i++) {                
+            if (i === firstDay) {
+                inMonth = true;
+            } 
+
+            if (inMonth) {
                 dateArray.push(
-                    <div className="calendarCell" key={date}>
+                    <div className="calendarCell" key={i}>
                         <DateCard
-                            date={date}
+                            date={dayCounter}
+                            inMonth={true}
+                            populated={false}
                         />
                     </div>
                 )
+
+                dayCounter++;
+            } else dateArray.push(
+                <div className="calendarCell" key={i}>
+                    <DateCard
+                        date={dayCounter}
+                        inMonth={false}
+                        populated={false}
+                    />
+                </div>
+            )
+            
+            if (inMonth) {
+                if (inMonth) {                
+                    startDate.setDate(startDate.getDate() + 1);
+                }
+                if (startDate.getMonth() !== startMonth) {
+                    inMonth = false;
+                }
             }
-            startDate.setDate(startDate.getDate() + 1);
         }
         
         return dateArray;
