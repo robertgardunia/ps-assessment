@@ -4,7 +4,7 @@ import ReleasePromo from './ReleasePromo';
 const DateCard = (props) => {
     return (
         <div className="calendarCellContents">
-            <p className="calendarCellDate">{props.date}</p>
+            <div className="calendarCellDate"><span>{props.date}</span></div>
         </div>
     )
 }

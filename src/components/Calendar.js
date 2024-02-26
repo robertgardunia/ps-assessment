@@ -41,6 +41,13 @@ const Calendar = (props) => {
     nextParams = `${urlString}${paramLead}month=${nextMonth}&year=${nextYear}`;
     prevParams = `${urlString}${paramLead}month=${prevMonth}&year=${prevYear}`;
 
+    const generateDayLabels = () => {
+        let dayArray = [ "Sunday", "Monday", "Tuesday", "Wed", "Thursday", "Friday", "Saturday" ];
+        let dayArrayMap = dayArray.map((day) => <div className="calendarDayLabel" key={day}>{day}</div>)
+        
+        return dayArrayMap;
+    }
+
     const generateDates = () => {        
         const dateArray = [];
 
@@ -72,6 +79,7 @@ const Calendar = (props) => {
                 <div className="calendarControl rightControl"><a href={nextParams}>&gt;</a></div>
             </div>
             <div className="calendarBody">
+                {generateDayLabels()}
                 {generateDates()}
             </div>
         </div>
