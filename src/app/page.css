@@ -50,18 +50,19 @@ main {
     width: 100%;
 }
 
-.calendarControl { 
-}
+/* .calendarControl { 
+} */
 
 .calendarControl:hover {
-    colorcolor: gray;
+    color: gray;
     cursor: pointer;
 }
 
 .calendarDayLabel {
-    padding: 5px;  
+    padding: 20px;  
     flex-basis: 14.285%;
     font-weight: bold;
+    text-align: center;
 }
 
 .calendarHeader {

@@ -1,53 +1,42 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import Image from "next/image";
-
-import  "./page.css";
-
 import Calendar from "@/components/Calendar";
+import * as api from '../api/api.js';
+import "./page.css";
 
 export default function Home() {
   // determine month/year from default parameters, defaulting to 01/2024
-  const [calendarMonth, setCalendarMonth] = useState(1);
-  const [calendarYear, setCalendarYear] = useState(2020);  
-  
-  // check for month/year params
-  const getUrlParams = () => {
-    const urlParams = new URLSearchParams(window.location.search);
+  const [calendarMonth, setCalendarMonth] = useState();
+  const [calendarYear, setCalendarYear] = useState();  
+  const [returnedDataSet, setReturnedDataSet] = useState([]);
 
-    if (urlParams.has('month')) {
-      let paramMonth = urlParams.get('month');
-      let regexMonth = /(1[0-2]{1})|([1-9]{1})/g;
-    
-      if (paramMonth.match(regexMonth) && parseInt(paramMonth) >= 1 && parseInt(paramMonth) <= 12) {
-        console.log("month match")
-        setCalendarMonth(paramMonth);
-      }  else {
-        console.log("month fail")
-        alert(`month param of ${paramMonth} is invalid, defaulting to 1/2020`)
-        window.location.replace("http://localhost:3000/?month=1&year=2020");
-      }   
-    }
+  // retrieve events
+  const getData = async () => {
+    let returnedAPIData = await api.apiCall({
+        operation: 'GET'
+    })
 
-    if (urlParams.has('year')) {
-      let paramYear = urlParams.get('year');
-      let regexYear = /(19[0-9]{2}|2[0-9]{3})/g; 
-    
-      if (paramYear.match(regexYear)) {
-        console.log("year match")
-        setCalendarYear(paramYear);
-      } else {
-        alert(`year param of ${paramYear} is invalid, defaulting to 1/2020`);
-        window.location.replace("http://localhost:3000/?month=1&year=2020");
-      }   
-    }
-  
-    return;
-  }
+    setReturnedDataSet(returnedAPIData);
+  };
 
   useEffect(() => {
-    getUrlParams();
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.has('month')) { 
+      setCalendarMonth(urlParams.get('month'))      
+    } else { 
+      setCalendarMonth(1);
+    };
+
+    if (urlParams.has('year')) { 
+      setCalendarYear(urlParams.get('year'))       
+    } else {
+      setCalendarYear(2020);
+    };
+
+    
+    getData();
   }, [])  
 
   return (
@@ -55,6 +44,7 @@ export default function Home() {
       <Calendar
         calendarMonth={calendarMonth} 
         calendarYear={calendarYear}
+        returnedDataSet={returnedDataSet}
       />     
     </main>
   );

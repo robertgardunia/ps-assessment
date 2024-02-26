@@ -2,26 +2,29 @@
 
 import React, { useEffect, useState } from 'react';
 import DateCard from './DateCard';
-// import * as util from '../apis/util.js';
 
-const Calendar = (props) => {
+const Calendar = (props) => { 
+    const [urlProtocol, setUrlProtocol] = useState("");
+    const [urlHost, setUrlHost] = useState("");   
+    const dayArray = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
     var startDate = new Date(`${props.calendarMonth}/1/${props.calendarYear}`);
     var currMonthLabel = startDate.toLocaleString('default', { month: 'long'});
     var currMonth = parseInt(props.calendarMonth);
     var currYear = parseInt(props.calendarYear);
     var nextMonth, nextParams, nextYear, prevMonth, prevParams, prevYear;
 
-    console.log(currMonth, currYear)
+    useEffect(() => {
+        setUrlProtocol(window.location.protocol);
+        setUrlHost(window.location.host);
+    }, []);
 
     // set control params
-    if (currMonth == 1) {  
-        console.log("jan");        
+    if (currMonth == 1) {         
         prevMonth = 12;
         prevYear = currYear - 1;
         nextMonth = currMonth + 1;
         nextYear = currYear;
     } else if (currMonth == 12) { 
-        console.log("dec"); 
         prevMonth = currMonth - 1;
         prevYear = currYear;           
         nextMonth = 1;
@@ -35,15 +38,29 @@ const Calendar = (props) => {
 
     // ideally this would check for existing params and append on any existing ones 
     let paramLead = '?';
-    let protocol = window.location.protocol;
-    let host = window.location.host;
+    let protocol = urlProtocol;
+    let host = urlHost;
     let urlString = `${protocol}//${host}`;
     nextParams = `${urlString}${paramLead}month=${nextMonth}&year=${nextYear}`;
     prevParams = `${urlString}${paramLead}month=${prevMonth}&year=${prevYear}`;
 
+    // if (props.selectedAirplane != null) {
+    //     if (props.selectedAirplane.airplaneFuelTanks.length > 0) {
+    //       fuelTanksFilteredList = props.selectedAirplane.airplaneFuelTanks;
+    
+    //       fuelTanksRowsList = fuelTanksFilteredList.map((tank, index) =>
+    //         <tr key={index}>
+    //           <td>{tank.sortOrder}</td>
+    //           <td>{tank.fuelTankId}</td>
+    //           <td>{tank.fuelTankName}</td>
+    //           <td>{tank.maxGallons}</td>
+    //         </tr>
+    //       )
+    //     }
+    //   }
+
     const generateDayLabels = () => {
-        let dayArray = [ "Sunday", "Monday", "Tuesday", "Wed", "Thursday", "Friday", "Saturday" ];
-        let dayArrayMap = dayArray.map((day) => <div className="calendarDayLabel" key={day}>{day}</div>)
+        let dayArrayMap = dayArray.map((day, index) => <div className="calendarDayLabel" key={index}>{day}</div>)
         
         return dayArrayMap;
     }
@@ -51,14 +68,15 @@ const Calendar = (props) => {
     const generateDates = () => {        
         const dateArray = [];
 
+        // console.log("genDates: " + props.returnedDataSet)
+
         // create dateArray from valid dates
         var startMonth = startDate.getMonth();
 
-        for (let date = 1; date <= 32; date++) {
-            let keyValue = `day-${date}`;
+        for (let date = 1; date <= 42; date++) {
             if (startDate.getMonth() === startMonth) {
                 dateArray.push(
-                    <div className="calendarCell" key={keyValue}>
+                    <div className="calendarCell" key={date}>
                         <DateCard
                             date={date}
                         />
@@ -72,17 +90,21 @@ const Calendar = (props) => {
     }
 
     return (
-        <div className="calendarContainer">
-            <div className="calendarHeader">
-                <div className="calendarControl leftControl"><a href={prevParams}>&lt;</a></div>
-                <div className="calendarLabel">{currMonthLabel} {currYear}</div>
-                <div className="calendarControl rightControl"><a href={nextParams}>&gt;</a></div>
-            </div>
-            <div className="calendarBody">
-                {generateDayLabels()}
-                {generateDates()}
-            </div>
-        </div>
+        <>
+            {(props.calendarMonth !== undefined && props.calendarYear !== undefined) &&
+                <div className="calendarContainer">
+                    <div className="calendarHeader">
+                        <div className="calendarControl leftControl"><a href={prevParams}>&lt;</a></div>
+                        <div className="calendarLabel">{currMonthLabel} {currYear}</div>
+                        <div className="calendarControl rightControl"><a href={nextParams}>&gt;</a></div>
+                    </div>
+                    <div className="calendarBody">
+                        {generateDayLabels()}
+                        {generateDates()}
+                    </div>
+                </div>
+            }
+        </>
     )
 
 }
