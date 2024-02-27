@@ -19,30 +19,60 @@ main {
 }
 
 .calendarCellContents {
+    display: flex;
     aspect-ratio: 1 / 1;
     width: 100%;
     max-height: 100%;
     box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+    justify-content: flex-end;
+}
+
+.calendarCellContents.emptyCell {
+    box-shadow: none;
+}
+
+.calendarCellData {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.calendarCellData:hover {
+    transform: scale(1.08);
 }
 
 .calendarCellDate {
     display: flex;
     flex-direction: column;
     justify-content: center; 
-    width: 25px;
-    height: 25px;
-    font-size: 75%;
+    margin-top:10px;
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    font-size: 100%;
     font-weight: bold;
 }
 
 .calendarCellDate span {
-    align-self: center;
+    display: flex;
+    justify-content: center;
 }
 
-.calendarCellDate.populated {
+.calendarCellDate.hasData {
+    float: right;
     color: white;
     background: #2b67b7;
     border-radius: 50%;
+}
+
+.calendarCellImage.hasData img {
+    position: absolute;
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    transition: transform 0.3s ease-in-out
 }
 
 .calendarContainer {
@@ -50,18 +80,16 @@ main {
     width: 100%;
 }
 
-.calendarControl { 
-}
-
 .calendarControl:hover {
-    colorcolor: gray;
+    color: gray;
     cursor: pointer;
 }
 
 .calendarDayLabel {
-    padding: 5px;  
+    padding: 20px;  
     flex-basis: 14.285%;
     font-weight: bold;
+    text-align: center;
 }
 
 .calendarHeader {
@@ -76,4 +104,69 @@ main {
 
 .calendarLabel {
     flex-grow: 1;
+}
+
+.eventModal {  
+    position: relative;
+    width: 100%;  
+}
+
+.eventModalAvailability {
+    margin-bottom: 20px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.eventModalButtonGroup {
+    margin-top: 10px;
+}
+
+.eventModalButtonGroup a {
+    margin-right: 10px;
+    color: white;
+    font-weight: bold;
+    padding: 10px;    
+    border-radius: 20px;
+}
+
+.eventModalButtonGroup a.preOrder {
+    background-color: #c54820;
+}
+
+.eventModalButtonGroup a.learnMore {
+    background-color: #2e6ec5;
+}
+
+.eventModalData {
+    position: relative;
+    display: flex;
+    align-content: space-around;
+    flex-wrap: wrap;
+    width: fit-content;
+}
+
+.eventModalImage {    
+    position: relative;
+}
+
+.eventModalImage img {
+    /* position: absolute; */
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+}
+
+.eventModalInfo {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 0 0 4% ;
+    width: 30%;
+    color: white;
+    font-size: 75%;
+}
+
+.eventModalTitle {
+    text-transform: uppercase;
 }
