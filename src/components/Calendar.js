@@ -8,16 +8,11 @@ const Calendar = (props) => {
     const [urlHost, setUrlHost] = useState("");   
     const dayLabelArray = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
     var startDate = new Date(`${props.calendarMonth}/1/${props.calendarYear}`);
-    var firstDaySeed = new Date(`${props.calendarMonth}/1/${props.calendarYear}`);
     var currMonthLabel = startDate.toLocaleString('default', { month: 'long'});
     var currMonth = parseInt(props.calendarMonth);
     var currYear = parseInt(props.calendarYear);
     var nextMonth, nextParams, nextYear, prevMonth, prevParams, prevYear;
 
-    useEffect(() => {
-        setUrlProtocol(window.location.protocol);
-        setUrlHost(window.location.host);
-    }, []);
 
     // set control params
     if (currMonth == 1) {         
@@ -45,20 +40,24 @@ const Calendar = (props) => {
     nextParams = `${urlString}${paramLead}month=${nextMonth}&year=${nextYear}`;
     prevParams = `${urlString}${paramLead}month=${prevMonth}&year=${prevYear}`;
 
-    // if (props.selectedAirplane != null) {
-    //     if (props.selectedAirplane.airplaneFuelTanks.length > 0) {
-    //       fuelTanksFilteredList = props.selectedAirplane.airplaneFuelTanks;
-    
-    //       fuelTanksRowsList = fuelTanksFilteredList.map((tank, index) =>
-    //         <tr key={index}>
-    //           <td>{tank.sortOrder}</td>
-    //           <td>{tank.fuelTankId}</td>
-    //           <td>{tank.fuelTankName}</td>
-    //           <td>{tank.maxGallons}</td>
-    //         </tr>
-    //       )
-    //     }
-    //   }
+    const checkData = (passedFormattedDate) => {       
+        if (props.returnedDataSet.length > 0) {
+            let data = props.returnedDataSet;
+            let filteredData = data.filter((event) => {
+                let formattedEventDate = event.launchDate.split('T')[0];
+
+                if (formattedEventDate === passedFormattedDate) {
+                    return event.id;
+                }
+            });
+
+            if (filteredData.length > 0) {
+                return filteredData;
+            } 
+            
+            
+        }
+    }
 
     const generateDayLabels = () => {
         let dayArrayMap = dayLabelArray.map((day, index) => <div className="calendarDayLabel" key={index}>{day}</div>)
@@ -72,10 +71,11 @@ const Calendar = (props) => {
         // create dateArray from valid dates
         var startMonth = startDate.getMonth();
         var inMonth = false;
-        var populated = false;        
+        var hasData = false;        
         let dayCounter = 1;        
         let firstDaySeed = new Date(`${props.calendarMonth}/1/${props.calendarYear}`);
         let firstDay;
+        let dataObject = {};
 
         // find first day of month
         for (let d = 1; d <= 7; d++) {            
@@ -90,27 +90,42 @@ const Calendar = (props) => {
                 inMonth = true;
             } 
 
-            if (inMonth) {
+            if (inMonth) {                
+                let formattedDate = startDate.toISOString().split('T')[0];
+                let dataObject = checkData(formattedDate);
+
+                if (dataObject !== undefined) {
+                    hasData = true;
+                } else {
+                    hasData = false;
+                }               
+
                 dateArray.push(
                     <div className="calendarCell" key={i}>
+                        <p>{hasData}</p>
                         <DateCard
                             date={dayCounter}
                             inMonth={true}
-                            populated={false}
+                            hasData={hasData}
+                            dataObject={dataObject}
                         />
                     </div>
                 )
 
                 dayCounter++;
-            } else dateArray.push(
-                <div className="calendarCell" key={i}>
-                    <DateCard
-                        date={dayCounter}
-                        inMonth={false}
-                        populated={false}
-                    />
-                </div>
-            )
+            } else {
+                dataObject = {};
+                dateArray.push(
+                    <div className="calendarCell" key={i}>
+                        <DateCard
+                            date={dayCounter}
+                            inMonth={false}
+                            hasData={false}
+                            dataObject={undefined}
+                        />
+                    </div>
+                )
+            }
             
             if (inMonth) {
                 if (inMonth) {                
@@ -124,6 +139,11 @@ const Calendar = (props) => {
         
         return dateArray;
     }
+    
+    useEffect(() => {
+        setUrlProtocol(window.location.protocol);
+        setUrlHost(window.location.host);
+    }, []);
 
     return (
         <>

@@ -19,20 +19,29 @@ main {
 }
 
 .calendarCellContents {
+    display: flex;
     aspect-ratio: 1 / 1;
     width: 100%;
     max-height: 100%;
     box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+    justify-content: flex-end;
 }
 
 .calendarCellContents.emptyCell {
     box-shadow: none;
 }
 
+.calendarCellData {
+    position: relative;
+    width: 100%;
+}
+
 .calendarCellDate {
     display: flex;
     flex-direction: column;
     justify-content: center; 
+    margin-top:5px;
+    margin-right: 5px;
     width: 25px;
     height: 25px;
     font-size: 75%;
@@ -43,19 +52,23 @@ main {
     align-self: center;
 }
 
-.calendarCellDate.populated {
+.calendarCellDate.hasData {
     color: white;
     background: #2b67b7;
     border-radius: 50%;
+}
+
+.calendarCellDate.hasData img {
+    position: absolute;
+    object-fit: contain;
+    width: 100%;
+    z-index: 0;
 }
 
 .calendarContainer {
     margin-top: 20px;
     width: 100%;
 }
-
-/* .calendarControl { 
-} */
 
 .calendarControl:hover {
     color: gray;
