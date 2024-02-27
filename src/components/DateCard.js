@@ -14,6 +14,7 @@ const DateCard = (props) => {
         e.preventDefault();
 
         props.setSelectedEvent(selectedDataObj);
+        props.openEventModal();
     }
 
     return (

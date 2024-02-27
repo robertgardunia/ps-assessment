@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import DateCard from './DateCard';
 
 const Calendar = (props) => { 
+    const [renderModal, setRenderModal] = useState();
     const [selectedEvent, setSelectedEvent] = useState();
     const [urlProtocol, setUrlProtocol] = useState("");
     const [urlHost, setUrlHost] = useState("");  
@@ -112,6 +113,7 @@ const Calendar = (props) => {
                             hasData={hasData}
                             dataObject={dataObject}
                             setSelectedEvent={setSelectedEvent}
+                            openEventModal={openEventModal}
                         />
                     </div>
                 )
@@ -143,13 +145,38 @@ const Calendar = (props) => {
         
         return dateArray;
     }
+
+    const openEventModal = () => {
+        console.log("open!")
+        setRenderModal(true);
+    }
+
+    const closeEventModal = () => {        
+        console.log("close!")
+        setRenderModal(false);
+        setSelectedEvent();
+    }
     
     useEffect(() => {
         setUrlProtocol(window.location.protocol);
         setUrlHost(window.location.host);
     }, []);
 
-    console.log(selectedEvent);
+    // if (selectedEvent !== undefined) {
+    //     openEventModal();
+    // } else {
+    //     closeEventModal();
+    // }
+
+    const eventModal = () => {
+        if (renderModal) {
+            return (
+                <div className="eventModalContainer">                    
+                    <div>HI!</div>
+                </div>
+            )
+        }
+    }
 
     return (
         <>
@@ -166,6 +193,7 @@ const Calendar = (props) => {
                     </div>
                 </div>
             }
+            {eventModal()}
         </>
     )
 
