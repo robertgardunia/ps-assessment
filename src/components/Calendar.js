@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import DateCard from './DateCard';
 
 const Calendar = (props) => { 
-    const [renderModal, setRenderModal] = useState();
+    const [renderModal, setRenderModal] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState();
     const [urlProtocol, setUrlProtocol] = useState("");
     const [urlHost, setUrlHost] = useState("");  
@@ -139,6 +139,14 @@ const Calendar = (props) => {
                     </div>
                 )
             }
+
+            if (i === 14) {
+                dateArray.push(
+                    <>
+                        {eventModal()}
+                    </>
+                );
+            }
             
             if (inMonth) {
                 if (inMonth) {                
@@ -157,7 +165,9 @@ const Calendar = (props) => {
         setRenderModal(true);
     }
 
-    const closeEventModal = () => {  
+    const closeEventModal = (e) => { 
+        e.preventDefault();
+        
         setRenderModal(false);
         setSelectedEvent();
     }
@@ -185,7 +195,7 @@ const Calendar = (props) => {
             return (
                 <div className="eventModal">   
                     <div className="eventModalData>">
-                        <div className="eventModalImage">
+                        <div className="eventModalImage" onClick={(e) => closeEventModal(e)}>
                             <img src={'images/' + selectedEvent.imageFilenameFull + '.webp'}></img>
                         </div>
 
@@ -197,8 +207,8 @@ const Calendar = (props) => {
                                 Available {date.toLocaleString('default', { month: 'long'})} {dateWithSuffix} {date.getYear()}
                             </div>
                             <div className="eventModalButtonGroup">
-                                <a href={selectedEvent.learnMoreLink} className="learnMore">Learn More</a>
-                                <a href={selectedEvent.purchaseLink} className="preOrder">Pre-order Now</a>                        
+                                <a href={selectedEvent.learnMoreLink} target="_blank" className="learnMore">Learn More</a>
+                                <a href={selectedEvent.purchaseLink} target="_blank" className="preOrder">Pre-order Now</a>                        
                             </div>
                         </div>
                     </div>
@@ -218,10 +228,8 @@ const Calendar = (props) => {
                     </div>
                     <div className="calendarBody">
                         {generateDayLabels()}
-                        {generateDates()}
+                        {generateDates()}                    
                     </div>
-                    
-                    {eventModal()}
                 </div>
             }
         </>
