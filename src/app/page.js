@@ -6,7 +6,6 @@ import * as api from '../api/api.js';
 import "./page.css";
 
 export default function Home() {
-  // determine month/year from default parameters, defaulting to 01/2024
   const [calendarMonth, setCalendarMonth] = useState();
   const [calendarYear, setCalendarYear] = useState();  
   const [returnedDataSet, setReturnedDataSet] = useState([]);
@@ -32,7 +31,7 @@ export default function Home() {
     if (urlParams.has('year')) { 
       setCalendarYear(urlParams.get('year'))       
     } else {
-      setCalendarYear(2020);
+      setCalendarYear(2023);
     };
 
     

@@ -4,9 +4,12 @@ import React, { useEffect, useState } from 'react';
 import DateCard from './DateCard';
 
 const Calendar = (props) => { 
+    const [selectedEvent, setSelectedEvent] = useState();
     const [urlProtocol, setUrlProtocol] = useState("");
-    const [urlHost, setUrlHost] = useState("");   
+    const [urlHost, setUrlHost] = useState("");  
+        
     const dayLabelArray = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
+    
     var startDate = new Date(`${props.calendarMonth}/1/${props.calendarYear}`);
     var currMonthLabel = startDate.toLocaleString('default', { month: 'long'});
     var currMonth = parseInt(props.calendarMonth);
@@ -65,7 +68,7 @@ const Calendar = (props) => {
         return dayArrayMap;
     }
 
-    const generateDates = () => {        
+    const generateDates = () => {   
         const dateArray = [];
 
         // create dateArray from valid dates
@@ -92,14 +95,14 @@ const Calendar = (props) => {
 
             if (inMonth) {                
                 let formattedDate = startDate.toISOString().split('T')[0];
-                let dataObject = checkData(formattedDate);
+                dataObject = checkData(formattedDate);
 
                 if (dataObject !== undefined) {
                     hasData = true;
                 } else {
                     hasData = false;
-                }               
-
+                }   
+                
                 dateArray.push(
                     <div className="calendarCell" key={i}>
                         <p>{hasData}</p>
@@ -108,6 +111,7 @@ const Calendar = (props) => {
                             inMonth={true}
                             hasData={hasData}
                             dataObject={dataObject}
+                            setSelectedEvent={setSelectedEvent}
                         />
                     </div>
                 )
@@ -144,6 +148,8 @@ const Calendar = (props) => {
         setUrlProtocol(window.location.protocol);
         setUrlHost(window.location.host);
     }, []);
+
+    console.log(selectedEvent);
 
     return (
         <>

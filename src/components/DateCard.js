@@ -1,32 +1,44 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import ReleasePromo from './ReleasePromo';
 
-const DateCard = (props) => {    
-    var hasData = props.hasData;
-    var dataObject = props.dataObject;
+const DateCard = (props) => { 
+    var dataObjectRef = {}
+    
+    if(props.hasData) {
+        dataObjectRef = props.dataObject[0];
+    }   
 
-    console.log("boo")
+    const handleEventSelect = (e, selectedDataObj) => {
+        e.preventDefault();
+
+        props.setSelectedEvent(selectedDataObj);
+    }
 
     return (
         <>
-            {props.inMonth &&
+            {(props.inMonth) &&
                 <div className="calendarCellContents">
                     {props.hasData &&
-                        <div className="calendarData">
-                            <div className="calendarImage hasData">
-                                <p>hi {dataObject.id}</p>
-                                {/* {<img src={'images/' + props.dataObject.imageFilenameThumb + '.webp'}></img>} */}
+                        <div className="calendarCellData" onClick={(e) => handleEventSelect(e, dataObjectRef)}>
+                            <div className="calendarCellImage hasData">
+                                {<img src={'images/' + dataObjectRef.imageFilenameThumb + '.webp'}></img>}
                             </div>
-                            <div className="calendarCellDate hasData"><span>{props.date}</span></div>
+                            <div className="calendarCellDate hasData">
+                                <span>{props.date}</span>
+                            </div>
                         </div>
                     }
                     {!props.hasData &&
-                        <div className="calendarCellDate"><span>{props.date}</span></div>
+                        <div className="calendarCellDate">
+                            <span>{props.date}</span>
+                        </div>
                     }
                 </div>
             }
             {!props.inMonth && 
-                <div className="calendarCellContents emptyCell">{props.inMonth}</div>
+                <div className="calendarCellContents emptyCell"></div>
             }
         </>
     )
