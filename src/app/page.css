@@ -105,3 +105,68 @@ main {
 .calendarLabel {
     flex-grow: 1;
 }
+
+.eventModal {  
+    position: relative;
+    width: 100%;  
+}
+
+.eventModalAvailability {
+    margin-bottom: 20px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.eventModalButtonGroup {
+    margin-top: 10px;
+}
+
+.eventModalButtonGroup a {
+    margin-right: 10px;
+    color: white;
+    font-weight: bold;
+    padding: 10px;    
+    border-radius: 20px;
+}
+
+.eventModalButtonGroup a.preOrder {
+    background-color: #c54820;
+}
+
+.eventModalButtonGroup a.learnMore {
+    background-color: #2e6ec5;
+}
+
+.eventModalData {
+    position: relative;
+    display: flex;
+    align-content: space-around;
+    flex-wrap: wrap;
+    width: fit-content;
+}
+
+.eventModalImage {    
+    position: relative;
+}
+
+.eventModalImage img {
+    /* position: absolute; */
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+}
+
+.eventModalInfo {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 0 0 4% ;
+    width: 30%;
+    color: white;
+    font-size: 75%;
+}
+
+.eventModalTitle {
+    text-transform: uppercase;
+}

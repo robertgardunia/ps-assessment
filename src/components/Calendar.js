@@ -80,6 +80,7 @@ const Calendar = (props) => {
         let firstDaySeed = new Date(`${props.calendarMonth}/1/${props.calendarYear}`);
         let firstDay;
         let dataObject = {};
+        let calendarCellModalAnchor = "calendarCell";
 
         // find first day of month
         for (let d = 1; d <= 7; d++) {            
@@ -103,9 +104,15 @@ const Calendar = (props) => {
                 } else {
                     hasData = false;
                 }   
+
+                if (i === 14) {
+                    calendarCellModalAnchor = "calendarCell eventModalAnchor";
+                } else {
+                    calendarCellModalAnchor = "calendarCell";
+                }
                 
                 dateArray.push(
-                    <div className="calendarCell" key={i}>
+                    <div className={calendarCellModalAnchor} key={i}>
                         <p>{hasData}</p>
                         <DateCard
                             date={dayCounter}
@@ -122,8 +129,8 @@ const Calendar = (props) => {
             } else {
                 dataObject = {};
                 dateArray.push(
-                    <div className="calendarCell" key={i}>
-                        <DateCard
+                    <div className={calendarCellModalAnchor} key={i}>
+                        <DateCard 
                             date={dayCounter}
                             inMonth={false}
                             hasData={false}
@@ -147,12 +154,10 @@ const Calendar = (props) => {
     }
 
     const openEventModal = () => {
-        console.log("open!")
         setRenderModal(true);
     }
 
-    const closeEventModal = () => {        
-        console.log("close!")
+    const closeEventModal = () => {  
         setRenderModal(false);
         setSelectedEvent();
     }
@@ -162,17 +167,41 @@ const Calendar = (props) => {
         setUrlHost(window.location.host);
     }, []);
 
-    // if (selectedEvent !== undefined) {
-    //     openEventModal();
-    // } else {
-    //     closeEventModal();
-    // }
-
     const eventModal = () => {
         if (renderModal) {
+            let date = new Date(selectedEvent.launchDate);
+            let dateWithSuffix = date.getDate();
+
+            if (dateWithSuffix === "1") {
+                dateWithSuffix += 'st';
+            } else if (dateWithSuffix === "2") {
+                dateWithSuffix += 'nd';
+            } else if (dateWithSuffix === "3") {
+                dateWithSuffix += 'rd';
+            } else {
+                dateWithSuffix += 'th';
+            };
+
             return (
-                <div className="eventModalContainer">                    
-                    <div>HI!</div>
+                <div className="eventModal">   
+                    <div className="eventModalData>">
+                        <div className="eventModalImage">
+                            <img src={'images/' + selectedEvent.imageFilenameFull + '.webp'}></img>
+                        </div>
+
+                        <div className="eventModalInfo">
+                            <div className="eventModalText">
+                                <span className="eventModalTitle">{selectedEvent.title}: </span>{selectedEvent.summary}
+                            </div>
+                            <div className="eventModalAvailability">
+                                Available {date.toLocaleString('default', { month: 'long'})} {dateWithSuffix} {date.getYear()}
+                            </div>
+                            <div className="eventModalButtonGroup">
+                                <a href={selectedEvent.learnMoreLink} className="learnMore">Learn More</a>
+                                <a href={selectedEvent.purchaseLink} className="preOrder">Pre-order Now</a>                        
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )
         }
@@ -191,9 +220,10 @@ const Calendar = (props) => {
                         {generateDayLabels()}
                         {generateDates()}
                     </div>
+                    
+                    {eventModal()}
                 </div>
             }
-            {eventModal()}
         </>
     )
 

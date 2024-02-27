@@ -24,7 +24,7 @@ const DateCard = (props) => {
                     {props.hasData &&
                         <div className="calendarCellData" onClick={(e) => handleEventSelect(e, dataObjectRef)}>
                             <div className="calendarCellImage hasData">
-                                {<img src={'images/' + dataObjectRef.imageFilenameThumb + '.webp'}></img>}
+                                <img src={'images/' + dataObjectRef.imageFilenameThumb + '.webp'}></img>
                             </div>
                             <div className="calendarCellDate hasData">
                                 <span>{props.date}</span>
