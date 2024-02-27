@@ -1,14 +1,19 @@
 ## Getting Started
 
+To set up to run:
+
 ```bash
 npm install
 npm run dev
+```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-This was built with on a react-next install package. 
+Note: This was built with on a react-next install package. 
 
-Noted Data Issues:
+--
+
+Discovered Data Issues:
 I had to go in and correct the JSON as it was missing commas.
 
 There is also an invalid date on Metal Gear Solid: The Phantom Pain "2023-14-29"
